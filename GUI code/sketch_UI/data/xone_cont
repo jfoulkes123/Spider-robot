@@ -1,0 +1,17 @@
+xbox one game controller output
+A_button	the A button	1	BUTTON	Button 0	0	0.0	0.0
+B_button	the B button	1	BUTTON	Button 1	0	0.0	0.0
+X_button	the X button	1	BUTTON	Button 2	0	0.0	0.0
+Y_button	the Y button	1	BUTTON	Button 3	0	0.0	0.0
+Trigger_output	neg for right, pos for left	3	SLIDER	Z Axis	0	1.0	0.0
+RB_button	right bumper	1	BUTTON	Button 5	0	0.0	0.0
+LB_button	left bumper	1	BUTTON	Button 4	0	0.0	0.0
+R3_button	right stick in	1	BUTTON	Button 9	0	0.0	0.0
+L3_button	left stick in	1	BUTTON	Button 8	0	0.0	0.0
+SQRS_button	button with squares	1	BUTTON	Button 6	0	0.0	0.0
+BURG_button	button with burger	1	BUTTON	Button 7	0	0.0	0.0
+DPAD_output	output from D-pad	2	HAT	cooliehat: Hat Switch	0	1.0	0.0
+LX_output	left stick x-axis	3	SLIDER	X Axis	0	1.0	0.0
+LY_output	left stick y-axis	3	SLIDER	Y Axis	0	1.0	0.0
+RY_output	right stick y-axis	3	SLIDER	Y Rotation	0	1.0	0.0
+RX_output	right stick x-axis	3	SLIDER	X Rotation	0	1.0	0.0
