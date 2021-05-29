@@ -46,7 +46,7 @@ Mutex data_in_mutex;
 
 
 //declaring variables
-uint8_t postior =3;//0 = stand,1= walk,2 = intimidate, 3 = test;
+uint8_t postior =0;//0 = stand,1= walk,2 = intimidate, 3 = test;
 int tally = 1;
 int speed = 500;
 uint8_t velocity = 0;
@@ -152,43 +152,11 @@ void data_out(void){
 }
 
 
-
-// //uses data
-// void data_output_2(int in_data){
-
-//         if (in_data < 800 &&  in_data > 700){
-//             float temp = (in_data - 700)/10;
-//             temp = std::floor(temp);
-//             pc.printf("%d\n\r",int(temp));
-//         }
-//         else if (in_data == 630){//stand
-//             postior = 0;
-//         }
-//         else if(in_data == 620){//initimidate
-//             postior = 2;
-//         }
-//         else if(in_data == 610){//walk
-//             postior = 1;
-//         }
-//         else{
-//             pc.printf("%d",in_data);
-//         }
-
-
-
-    
-// }
-
 void arduino(){
-
+        //function which get data from the arduino
         char buffer[3];
         int input;
-        //input =read_data(&pc, &serial_arduino);
         serial_arduino.scanf("%d",&input);
-        //pc.printf("data\n\r");
-        //buffer[3]= 0;
-        //sscanf(buffer, "%d", &input);
-        //pc.printf("data: %d", input);
         if (input < 1000 && input > -1){
             uint8_t current_r = input%100;
             secondry.add_data(int(current_r/2)+450);
@@ -205,13 +173,12 @@ void arduino(){
 
 
 void data_control(){
+    //function that handles the send and receive of the data via bluetooth
     uint8_t i =0;
     while(1){
-        //data_emulator(tally, &primary, &secondary,&pc);
         int data = read_data(&pc,&serial2);
         data_buffer.add_data(data);
-        //int in_data = data_buffer.pop();
-        //pc.printf("data received: %d\n\r",data);
+
         
         if (i > 5){
          arduino();
@@ -222,22 +189,12 @@ void data_control(){
         ThisThread::sleep_for(50);
         
         i++;
-        // if (primary.end_loc_return()==0){
-        //     if (secondary.end_loc_return()!=0){
-        //         secondary.pop();
-        //     }
-        // }
-        // else{
-        //     primary.pop();
-        // }
-        //for(int x = 0; x < 10; x++){
-        //pc.printf("sending data");
+
         
         pc.printf("sending data\n\r");
         send_data(&primary, &secondry, &pc, &serial2);
 
-        //serial2.printf("x111");
-        //}
+
         tally++;
         
     }
@@ -266,7 +223,6 @@ void data_output(){
                 else{
                     velocity = 0;
                 }
-                //pc.printf("%d\n\r",int(temp));
             }
             else if (in_data == 630){//stand
                 postior = 0;
@@ -288,38 +244,6 @@ void data_output(){
 
 
 
-void read_terminal(void){
-    while(1){
-        char buff[10];
-        pc.printf("Enter direction\n\r");
-        pc.scanf("%s", buff);
-        if (strcmp("forward",buff) == 0){
-            pc.printf("forward\n\r");
-            velocity = 1;
-        }
-        else if (strcmp("backwards",buff) == 0){
-            pc.printf("backwards\n\r");
-            velocity = -1;
-        }
-        else if (strcmp("stop", buff) == 0) {
-            pc.printf("stop\n\r");
-            velocity = 0;
-        }
-        else if (strcmp("fast", buff) == 0) {
-            pc.printf("fast\n\r");
-            speed = 100;
-        }
-        else if (strcmp("slow", buff) == 0) {
-            pc.printf("slow\n\r");
-            speed = 500;
-        }
-
-        else {
-            pc.printf("unknown input\n\r");
-        }
-    }
-}
-
 
 
 
@@ -337,61 +261,19 @@ int main()
     leg_2R.setup();
     leg_3R.setup();
     leg_4R.setup();
-   // stand(3000);
-    //double q1,q2,q3;
-    // leg_4R.ikunc_new(120, -120, -250, &q1, &q2, &q3);
-    // pc.printf("q1: %f, q2: %f, q3: %f\n\r",q1,q2,q3);
+
 
     stand(0);// initial stance
     
-    
-    // float x1Rpos[100],y1Rpos[100],z1Rpos[100];
-    // float x1Lpos[100],y1Lpos[100],z1Lpos[100];
-    // float x2Rpos[100],y2Rpos[100],z2Rpos[100];
-    //float x2Lpos[100],y2Lpos[100],z2Lpos[100];
-    //float x3Rpos[100],y3Rpos[100],z3Rpos[100];
-    //float x3Lpos[100],y3Lpos[100],z3Lpos[100];
-    //float x4Rpos[100],y4Rpos[100],z4Rpos[100];
-    //float x4Lpos[100],y4Lpos[100],z4Lpos[100];
-    //leg_1R.cycle_data_new(x1Rpos, y1Rpos, z1Rpos,60 , 60, -250, 60, 210, -250, 42, 243, 53, 0, 68);
-    //leg_1L.cycle_data_new(x1Lpos, y1Lpos, z1Lpos,60 , 60, -250, 60, 210, -250, 42, 243, 53, 40, 10);
-    //leg_2R.cycle_data_new(x2Rpos, y2Rpos, z2Rpos,60 , 60, -250, 60, 210, -250, 42, 243, 53, 40, 10); //150,0, -250, 150,150,-250, 150, 0, -250, 70, 90
-    //leg_2L.cycle_data_new(x2Lpos, y2Lpos, z2Lpos,150 ,0 , -250, 150,150, -250, 30, 0  , 50, 50, 20);
-    //leg_3L.cycle_data_new(x3Lpos, y3Lpos, z3Lpos,60 , 60, -250, 60, 210, -250, 42, 243, 53, 40, 10);
-    //leg_3R.cycle_data_new(x3Rpos, y3Rpos, z3Rpos,60 , 60, -250, 60, 210, -250, 42, 243, 53, 40, 10);
-    //leg_4L.cycle_data_new(x4Lpos, y4Lpos, z4Lpos,60 , 60, -250, 60, 210, -250, 42, 243, 53, 40, 10);
-    //leg_4R.cycle_data_new(x4Rpos, y4Rpos, z4Rpos,60 , 60, -250, 60, 210, -250, 42, 243, 53, 40, 10);
+
     int n = 50;
+    //starts each thread
     thread_data.start(data_output);
     thread_coms.start(data_control);
     thread_data_out.start(data_out);
-    //intimidate();
-    // pc.printf("\n\rxpos: ");
-    // for (int x = 0; x < 100 ; x++){
-    //     pc.printf("%f ,",x2Rpos[x]);
-    // }
-    // pc.printf("\n\rypos: ");
-    // for (int x = 0; x < 100 ; x++){
-    //     pc.printf("%f ,",y2Rpos[x]);
-    // }
-    // pc.printf("\n\rzpos: ");
-    // for (int x = 0; x < 100 ; x++){
-    //     pc.printf("%f ,",z2Rpos[x]);
-    // }
-    // pc.printf("\n\rxpos: ");
-    // for (int x = 0; x < 100 ; x++){
-    //     pc.printf("%f ,",x2Lpos[x]);
-    // }
-    // pc.printf("\n\rypos: ");
-    // for (int x = 0; x < 100 ; x++){
-    //     pc.printf("%f ,",y2Lpos[x]);
-    // }
-    // pc.printf("\n\rzpos: ");
-    // for (int x = 0; x < 100 ; x++){
-    //     pc.printf("%f ,",z2Lpos[x]);
-    // }
-    pc.printf("\n\r");
 
+
+    //delcleration of all variables 
     double l1a,l1b,l1c;
     double l2a,l2b,l2c;
     double l3a,l3b,l3c;
@@ -409,22 +291,21 @@ int main()
     int16_t l3x,l3y,l3z;
     int16_t l4x,l4y,l4z;
 
-    //leg_2L.LEG_servo(0, 0, 0);
     while (1){
-        
-        if (postior == 0){
+       
+        if (postior == 0){//stand
             stand(0);
             LED_display(1);
             pc.printf("standing\n\r");
             ThisThread::sleep_for(100);
         }
-        else if(postior== 2){
+        else if(postior== 2){//intimidate
             intimidate();
             LED_display(3);
             pc.printf("intimidating\n\r");
             ThisThread::sleep_for(100);
         }
-        else if(postior == 1){
+        else if(postior == 1){//walk
            
             if(n > 99){n =99;}
             if(n<0){n =0;};
@@ -446,8 +327,6 @@ int main()
             leg_3L.ikunc_new(l3x, l3y, l3z, &l3a, &l3b, &l3c);
             leg_4L.ikunc_new(l4x, l4y, l4z, &l4a, &l4b, &l4c);
             pc.printf("array: %d\n\r",n);
-            //pc.printf("q1: %f, q2: %f, q3: %f\n\r",-q1,-q2,q3);
-            //pc.printf("a1: %f, a2: %f, a3: %f\n\r",a1,-a2,a3);
             leg_1R.LEG_servo(-r1a, -r1b, r1c);
             leg_2R.LEG_servo(-r2a, -r2b, r2c);
             leg_3R.LEG_servo(r3a, -r3b, r3c);
@@ -457,7 +336,6 @@ int main()
             leg_3L.LEG_servo(-l3a, -l3b, l3c);
             leg_4L.LEG_servo(-l4a, -l4b, l4c);
             
-            //leg_2R.LEG_servo(-r2a, -r2b, r2c);
             ThisThread::sleep_for(100);
 
             n = n - velocity;
@@ -469,7 +347,7 @@ int main()
             }
 
         }
-        else if(postior == 3){
+        else if(postior == 3){//for trsting purposes only
             pc.printf("standing\n\r");
             stand(0);
             ThisThread::sleep_for(100);
